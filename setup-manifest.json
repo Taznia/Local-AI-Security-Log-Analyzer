@@ -1,0 +1,10 @@
+{
+  "model_repo": "unsloth/Qwen3.5-2B-GGUF",
+  "model_file": "Qwen3.5-2B-Q4_K_M.gguf",
+  "model_revision": "f6d5376be1edb4d416d56da11e5397a961aca8ae",
+  "model_sha256": "aaf42c8b7c3cab2bf3d69c355048d4a0ee9973d48f16c731c0520ee914699223",
+  "model_bytes": 1280835840,
+  "llama_release": "b12182",
+  "binary_asset": "llama-b12182-bin-win-cpu-x64.zip",
+  "platform": "Windows-11-10.0.26200-SP0"
+}

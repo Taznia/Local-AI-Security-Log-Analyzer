@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+.pytest_cache/
+runtime/
+models/
+bin/
+*.pyc
+.env
+artifacts/*.mp4
+artifacts/*.wav
+artifacts/frames/
+private-notes/
+*.log
+artifacts/*.json

@@ -1,0 +1,128 @@
+/* Default black palette. Layout and typography live in theme.css. */
+:root {
+  color-scheme: dark;
+  --blue: #0875dd;
+  --blue-soft: #14253a;
+  --ink: #edf2f8;
+  --secondary: #b5bfcd;
+  --muted: #8b96a8;
+  --line: #252d39;
+  --fog: #11161e;
+  --orange: #dda16e;
+}
+
+body { background: #080b10; }
+::selection { background: #194f85; color: #fff; }
+button:focus-visible, a:focus-visible, label:focus-visible, input:focus-visible { outline-color: #6aa9ef; }
+.announcement { background: #0c1016; color: #a0aab9; }
+.announcement span { color: #788598; }
+.topbar { background: rgba(8,11,16,.96); border-bottom-color: #232b37; }
+.brand-mark { color: #70aff7; }
+.nav { color: #95a1b3; }
+.count, .cpu-chip { background: #1a2230; color: #9caec4; }
+.local-badge { color: #95a1b3; }
+.button { border-color: #3c4757; }
+.button:hover { background: #1a2330; border-color: #607088; }
+.button.primary:hover { background: #1684ef; border-color: #1684ef; }
+.button.primary:disabled { background: #182b40; border-color: #253d56; color: #7c95b0; }
+
+.hero { background: #0b1320; }
+.hero-background { background: linear-gradient(130deg, #070c14, #102139); }
+bb-silk-waves { opacity: .65; }
+.hero::before { background: radial-gradient(ellipse at 50% 35%, rgba(6,10,17,.93) 0, rgba(7,12,21,.82) 27%, rgba(8,14,24,.43) 61%, rgba(7,13,23,.06) 100%); }
+.hero-content > p { color: #a9b8cb; }
+.hero-actions .text-link { color: #c0d0e4; }
+.hero-actions .text-link:hover { color: #82bbff; }
+.hero-corner, .hero-edition { color: #7d96b2; }
+
+.status-strip { border-bottom-color: #202834; color: #929fb2; }
+.status-strip strong { color: #bbc9da; }
+.status-light { box-shadow: 0 0 0 4px #282216; }
+.status-light.ready { background: #75b898; box-shadow: 0 0 0 4px #14261f; }
+.status-light.error { background: #e3867d; box-shadow: 0 0 0 4px #2c1a20; }
+.strip-separator { border-left-color: #2b3543; }
+.strip-end { color: #a6b7cc; }
+.workspace-heading p { color: #8c99ac; }
+.card { border-color: #252e3b; }
+.card-heading p { color: #95a3b6; }
+.corner-icon { border-color: #303d50; color: #9db4cf; }
+.dropzone { background: #0b1018; border-color: #344a65; }
+.dropzone:hover, .dropzone.drag { background: #111f32; border-color: #5597e4; }
+.dropzone > span:not(.upload-icon) { color: #99a7bb; }
+.dropzone u, .upload-icon { color: #7cb6fa; }
+.dropzone .file-types { color: #8292a9 !important; }
+.upload-meta { color: #93a3ba; }
+.upload-meta .icon { color: #9cb4d0; }
+.microcopy { color: #8594ab; }
+.badge { background: #1d2735; color: #a4b4c8; }
+.badge.running, .badge.queued { color: #8bc0ff; background: #162c46; }
+.badge.completed { color: #8ac7a6; background: #172c23; }
+.badge.failed, .badge.interrupted { color: #dfb184; background: #30241b; }
+
+.pipeline-step:not(:last-child)::before { border-left-color: #2d3b4d; }
+.step-node { background: #0d141f; border-color: #334257; color: #9db2ca; }
+.pipeline-step strong { color: #c5d1e1; }
+.pipeline-step p { color: #8d9eb5; }
+.step-state { color: #8193ab; }
+.pipeline-step.current .step-node { border-color: #477fbd; background: #172c44; color: #98c9ff; }
+.pipeline-step.done .step-state, .progress-header strong { color: #75b5ff; }
+.progress-header, .progress-footer { color: #90a2ba; }
+.progress-track { background: #263345; }
+.chunk-cell { background: #27364a; }
+.chunk-cell.done { background: #507eaf; }
+.chunk-cell.active { background: #a4ceff; }
+
+.metric { border-right-color: #252e3b; }
+.metric-label { color: #9aa7ba; }
+.metric-label .icon { color: #92aac6; }
+.metric-note { color: #8999b0; }
+.findings-card { background: transparent; }
+.heading-count { background: #172b43; color: #a4c9f2; }
+.tab { color: #8e9cb0; }
+.search { background: #101720; border-color: #2e3b4e; color: #91aac7; }
+.search input { color: #d0dbea; caret-color: #8bc0ff; }
+.search input::placeholder { color: #8092aa; }
+.empty-state { background: #0e141d; }
+.empty-illustration { background: #121d2b; border-color: #334359; }
+.empty-line { background: #3d536f; }
+.empty-illustration > span { background: #1a3554; border-color: #0e141d; color: #9ac9ff; }
+.empty-state p, .empty-label { color: #91a1b8; }
+
+.finding { border-bottom-color: #252e3b; }
+.finding-number { background: #141f2d; border-color: #2c3b4e; color: #9ab2cf; }
+.finding-identifiers { color: #92a4bb; }
+.finding-identifiers code { color: #93bced; }
+.severity { border-color: #3a4759; }
+.severity.High, .severity.Critical { color: #f09b94; background: #2b191e; border-color: #573039; }
+.severity.Medium { color: #e4b681; background: #292117; border-color: #4e3d29; }
+.severity.Low { color: #9ac4f8; background: #14243a; border-color: #2f4665; }
+.finding-action { background: #111c2a; border-left-color: #416b9d; color: #b1c0d3; }
+.finding-action strong { color: #9fc6f3; }
+.evidence-button { background: #0c131d; border-color: #334964; color: #a5c5eb; }
+.link-badge { background: #15253a; color: #9ebde0; }
+.event-note { color: #879ab3; }
+.report-caveat { background: #121a25; color: #9cacc2; }
+.audit-card { background: #0e151f; }
+.audit-toggle { color: #bdd0e8; }
+.audit-toggle span:last-child, .audit-content p { color: #90a3bd; }
+.audit-content th, .audit-content td { border-bottom-color: #29374b; }
+.audit-content th { color: #a3b7d0; }
+.alert { background: #282016; border-color: #4d3d26; color: #e5bf8e; }
+.text-button { color: #9ec4f0; }
+.history-row { border-top-color: #2b3749; }
+.history-row small { color: #95a5bb; }
+.history-row button { background: #111b28; border-color: #3b506c; color: #b3d1f5; }
+
+.footer { background: #05080c; color: #a9b6c7; }
+.footer-message { color: #8f9db2; }
+.footer-message strong { color: #d4deec; }
+.footer-bottom { border-top-color: #263140; color: #8b9bb1; }
+.offline-pill { color: #a6b7cd; }
+dialog { background: #0e151f; border-color: #35455c; box-shadow: 0 24px 100px #0009; }
+dialog::backdrop { background: rgba(0,3,8,.76); }
+.icon-button { background: #192331; border-color: #34455d; color: #c0d0e4; }
+.source-row { background: #0a111b; border-color: #2d3d52; }
+.source-label { background: #182536; color: #a1b7d1; }
+.source-label strong { color: #b2d3fc; }
+.source-row pre { color: #c2d2e7; }
+.evidence-note { color: #a0b3cd; }

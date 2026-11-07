@@ -3,13 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <title>Tracewatch ? Local security intelligence</title>
+  <meta name="theme-color" content="#080b10">
+  <title>Tracewatch &mdash; Local security intelligence</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230070d5'/%3E%3Cpath d='M10 11h20v5H22v14h-5V16h-7z' fill='white'/%3E%3C/svg%3E">
   <link rel="preload" href="/static/fonts/open-sans-variable.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="/static/theme.css?v=3">
-  <script type="module" src="/static/vendor/silk-waves.js?v=3"></script>
-  <script src="/static/app.js?v=3" defer></script>
+  <link rel="stylesheet" href="/static/theme.css?v=4">
+  <link rel="stylesheet" href="/static/black.css?v=4">
+  <script type="module" src="/static/vendor/silk-waves.js?v=4"></script>
+  <script src="/static/app.js?v=4" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -41,7 +42,7 @@
   </header>
 
   <section class="hero" aria-labelledby="heroTitle">
-    <div class="hero-background" aria-hidden="true"><bb-silk-waves silk-color="#afc6de" swell="0.28" sheen="0.85" reach="0.9" speed="0.35" bg-colors="#f5f8fc, #e4edf7" bg-angle="60"></bb-silk-waves></div>
+    <div class="hero-background" aria-hidden="true"><bb-silk-waves silk-color="#163c61" swell="0.28" sheen="0.55" reach="0.9" speed="0.35" bg-colors="#070c14, #0d1c30" bg-angle="60"></bb-silk-waves></div>
     <div class="hero-content">
       <div class="eyebrow">LOCAL SECURITY INTELLIGENCE</div>
       <h1 id="heroTitle">See the whole story.</h1>
@@ -52,14 +53,14 @@
   </section>
 
   <main id="workspace">
-    <section class="status-strip" aria-label="Local model status"><span class="status-light" id="modelLight"></span><strong id="modelStatus">Connecting to local model</strong><span class="strip-separator"></span><span id="modelName">Qwen3.5 2B ? Q4_K_M</span><span class="strip-end" id="ram">? MiB RAM</span><span class="cpu-chip">CPU ONLY</span></section>
+    <section class="status-strip" aria-label="Local model status"><span class="status-light" id="modelLight"></span><strong id="modelStatus">Connecting to local model</strong><span class="strip-separator"></span><span id="modelName">Qwen3.5 2B &middot; Q4_K_M</span><span class="strip-end" id="ram">&mdash; MiB RAM</span><span class="cpu-chip">CPU ONLY</span></section>
     <div id="alert" class="alert hidden" role="alert"></div>
-    <section id="historyPanel" class="card history hidden"><div class="card-heading"><div><span class="step-label">Saved investigations</span><h2>Pick up where you left off.</h2><p>Previous reports and saved checkpoints, all on this device.</p></div><button class="text-button" id="closeHistory">Close ?</button></div><div id="historyList"></div></section>
+    <section id="historyPanel" class="card history hidden"><div class="card-heading"><div><span class="step-label">Saved investigations</span><h2>Pick up where you left off.</h2><p>Previous reports and saved checkpoints, all on this device.</p></div><button class="text-button" id="closeHistory">Close &times;</button></div><div id="historyList"></div></section>
     <div class="workspace-heading"><h2>Your investigation starts here.</h2><p>Private analysis. A clearer perspective.</p></div>
     <div class="workspace-grid">
       <section class="card upload-card" aria-labelledby="uploadTitle">
         <div class="card-heading"><div><span class="step-label">01 / Upload</span><h2 id="uploadTitle">Bring your logs.</h2><p>A single file. A complete view of the activity.</p></div><span class="corner-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span></div>
-        <label id="dropzone" class="dropzone" for="fileInput" tabindex="0"><span class="upload-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span><strong id="dropTitle">Drop a log file here</strong><span id="dropSubtitle">or <u>browse your files</u></span><span class="file-types">.LOG OR .TXT <span>?</span> UTF-8 <span>?</span> UP TO 8 MiB</span></label>
+        <label id="dropzone" class="dropzone" for="fileInput" tabindex="0"><span class="upload-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span><strong id="dropTitle">Drop a log file here</strong><span id="dropSubtitle">or <u>browse your files</u></span><span class="file-types">.LOG OR .TXT <span>&middot;</span> UTF-8 <span>&middot;</span> UP TO 8 MiB</span></label>
         <input id="fileInput" type="file" accept=".log,.txt" hidden>
         <div class="upload-meta"><span><svg class="icon" aria-hidden="true"><use href="#i-lines"/></svg>Original line numbers preserved</span><span><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Only on your device</span></div>
         <button id="startButton" class="button primary" disabled><span>Start analysis</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
@@ -68,32 +69,32 @@
       <section class="card pipeline-card" aria-labelledby="pipelineTitle">
         <div class="card-heading"><div><span class="step-label">02 / Investigate</span><h2 id="pipelineTitle">Make the connections.</h2><p id="pipelineSubtitle">From individual events to the bigger picture.</p></div><span id="jobBadge" class="badge neutral">READY WHEN YOU ARE</span></div>
         <div class="pipeline">
-          <div class="pipeline-step" data-phase="splitting"><div class="step-node">1</div><div><strong>Split with precision</strong><p>Log entries fit within the model?s context, line numbers intact.</p></div><span class="step-state">?</span></div>
-          <div class="pipeline-step" data-phase="analyzing"><div class="step-node">2</div><div><strong>Analyze &amp; remember</strong><p>Local AI reviews each part. Useful facts carry forward.</p></div><span class="step-state">?</span></div>
-          <div class="pipeline-step" data-phase="correlating"><div class="step-node">3</div><div><strong>Connect the evidence</strong><p>Repeated signals become one coherent investigation.</p></div><span class="step-state">?</span></div>
+          <div class="pipeline-step" data-phase="splitting"><div class="step-node">1</div><div><strong>Split with precision</strong><p>Log entries fit within the model's context, line numbers intact.</p></div><span class="step-state">&mdash;</span></div>
+          <div class="pipeline-step" data-phase="analyzing"><div class="step-node">2</div><div><strong>Analyze &amp; remember</strong><p>Local AI reviews each part. Useful facts carry forward.</p></div><span class="step-state">&mdash;</span></div>
+          <div class="pipeline-step" data-phase="correlating"><div class="step-node">3</div><div><strong>Connect the evidence</strong><p>Repeated signals become one coherent investigation.</p></div><span class="step-state">&mdash;</span></div>
         </div>
-        <div class="progress-header"><span id="progressLabel">Waiting for a log file</span><strong id="progressPercent">0%</strong></div><div class="progress-track"><div id="progressBar"></div></div><div class="progress-footer"><span id="chunkCount">0 chunks processed</span><span id="elapsed">? elapsed</span></div><div id="chunkGrid" class="chunk-grid"></div>
+        <div class="progress-header"><span id="progressLabel">Waiting for a log file</span><strong id="progressPercent">0%</strong></div><div class="progress-track"><div id="progressBar"></div></div><div class="progress-footer"><span id="chunkCount">0 chunks processed</span><span id="elapsed">&mdash; elapsed</span></div><div id="chunkGrid" class="chunk-grid"></div>
         <div id="resumeArea" class="hidden"><button id="resumeButton" class="button secondary">Resume from checkpoint <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
       </section>
     </div>
 
     <section class="metrics" aria-label="Investigation summary">
-      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg> SECURITY FINDINGS</span><div><strong id="metricFindings">?</strong><span class="metric-note">evidence-backed signals</span></div></div>
-      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg> HIGH PRIORITY</span><div><strong id="metricHigh">?</strong><span class="metric-note">need a closer look</span></div></div>
-      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg> CONNECTED SIGNALS</span><div><strong id="metricLinks">?</strong><span class="metric-note">linked across chunks</span></div></div>
-      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-lines"/></svg> LINES ANALYZED</span><div><strong id="metricLines">?</strong><span class="metric-note" id="uniqueNote">original evidence retained</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg> SECURITY FINDINGS</span><div><strong id="metricFindings">&mdash;</strong><span class="metric-note">evidence-backed signals</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg> HIGH PRIORITY</span><div><strong id="metricHigh">&mdash;</strong><span class="metric-note">need a closer look</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg> CONNECTED SIGNALS</span><div><strong id="metricLinks">&mdash;</strong><span class="metric-note">linked across chunks</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-lines"/></svg> LINES ANALYZED</span><div><strong id="metricLines">&mdash;</strong><span class="metric-note" id="uniqueNote">original evidence retained</span></div></div>
     </section>
 
     <section id="report" class="card findings-card" aria-labelledby="reportTitle">
       <div class="card-heading"><div><span class="step-label">03 / Understand</span><h2 id="reportTitle">The investigation report<span class="heading-count" id="findingCount">0</span></h2><p id="reportSubtitle">One report, built from the whole file.</p></div><a id="exportButton" class="button secondary disabled" href="#" aria-disabled="true"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Export JSON</a></div>
       <div class="report-toolbar"><div class="tabs" role="tablist" aria-label="Filter findings"><button class="tab active" data-filter="all" role="tab" aria-selected="true">All findings</button><button class="tab" data-filter="High" role="tab" aria-selected="false">High priority</button><button class="tab" data-filter="linked" role="tab" aria-selected="false">Cross-chunk</button></div><label class="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="search" placeholder="Search IP, type or account" aria-label="Search findings"></label></div>
-      <div id="findingsList"><div class="empty-state"><div class="empty-illustration"><div class="empty-line"></div><span>?</span><div class="empty-line short"></div></div><h3>The story starts with your logs.</h3><p>Upload a file to uncover suspicious activity, connect related<br>events, and see the evidence behind every finding.</p><span class="empty-label">LOCAL MODEL. REAL EVIDENCE. FULL CONTEXT.</span></div></div>
-      <div id="reportCaveat" class="report-caveat hidden">? Findings indicate possible attacks and require human review. A blocked request is not proof of a successful attack.</div>
+      <div id="findingsList"><div class="empty-state"><div class="empty-illustration"><div class="empty-line"></div><span><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span><div class="empty-line short"></div></div><h3>The story starts with your logs.</h3><p>Upload a file to uncover suspicious activity, connect related<br>events, and see the evidence behind every finding.</p><span class="empty-label">LOCAL MODEL. REAL EVIDENCE. FULL CONTEXT.</span></div></div>
+      <div id="reportCaveat" class="report-caveat hidden">Note: Findings indicate possible attacks and require human review. A blocked request is not proof of a successful attack.</div>
     </section>
-    <section id="auditSection" class="card audit-card hidden"><button class="audit-toggle" id="auditToggle"><span>Token budget &amp; call audit</span><span>A closer look at the process ?</span></button><div id="auditBody" class="hidden"></div></section>
+    <section id="auditSection" class="card audit-card hidden"><button class="audit-toggle" id="auditToggle"><span>Token budget &amp; call audit</span><span>A closer look at the process &plus;</span></button><div id="auditBody" class="hidden"></div></section>
   </main>
 
-  <footer class="footer"><div class="footer-top"><a class="brand" href="/" aria-label="Tracewatch home"><svg class="brand-mark" aria-hidden="true"><use href="#i-brand"/></svg><span class="brand-word">tracewatch</span></a><div class="footer-message"><strong>Clarity without compromise.</strong>Local inference. Connected evidence. Careful conclusions.</div></div><div class="footer-bottom"><span>Tracewatch ? Local security intelligence</span><span class="offline-pill"><i></i> OFFLINE BY DESIGN</span></div></footer>
-  <dialog id="evidenceDialog" aria-labelledby="evidenceTitle"><div class="dialog-heading"><div><span class="step-label">Original source</span><h2 id="evidenceTitle">Evidence explorer</h2></div><button id="closeDialog" class="icon-button" aria-label="Close evidence">?</button></div><div id="evidenceContent"></div></dialog>
+  <footer class="footer"><div class="footer-top"><a class="brand" href="/" aria-label="Tracewatch home"><svg class="brand-mark" aria-hidden="true"><use href="#i-brand"/></svg><span class="brand-word">tracewatch</span></a><div class="footer-message"><strong>Clarity without compromise.</strong>Local inference. Connected evidence. Careful conclusions.</div></div><div class="footer-bottom"><span>Tracewatch &mdash; Local security intelligence</span><span class="offline-pill"><i></i> OFFLINE BY DESIGN</span></div></footer>
+  <dialog id="evidenceDialog" aria-labelledby="evidenceTitle"><div class="dialog-heading"><div><span class="step-label">Original source</span><h2 id="evidenceTitle">Evidence explorer</h2></div><button id="closeDialog" class="icon-button" aria-label="Close evidence">&times;</button></div><div id="evidenceContent"></div></dialog>
 </body>
 </html>

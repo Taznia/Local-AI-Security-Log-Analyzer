@@ -60,3 +60,8 @@ The small model occasionally emits wrong map labels and broadly worded recommend
 - CSS syntax/primary font and color checks supplement the DOM tests; these are not visual browser tests.
 - The six-finding report remains complete after restarting the application to apply the Windows font MIME registration.
 - Fonts, animation code, and dependency licenses are bundled locally. No log files, raw report JSON, private recording notes, or node_modules are included in the repository.
+
+
+## Default black theme
+
+The default interface now uses a black/charcoal palette with blue accents and a dark wave background. CSS parsing and computed-style checks verify black page and evidence-dialog surfaces and dark native controls. Both DOM integration tests pass, and live HTTP checks confirm the black stylesheet is loaded and the saved six-finding report remains complete. This is programmatic verification; the visual-preview limit above still applies.

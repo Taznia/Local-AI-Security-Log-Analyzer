@@ -123,3 +123,6 @@ Two concrete UI implementation mistakes were caught before handoff:
 - Windows initially served the TTF with a plain-text MIME type. A font MIME registration and live HTTP regression check now ensure `font/ttf`, including under the app's `nosniff` policy.
 
 Programmatic DOM tests also verify that model-provided strings remain escaped in findings and the evidence dialog. Native visual preview was interrupted while the user was interacting with the editor; no completed visual browser QA is claimed. Runtime local-model prompts and saved analysis results were unchanged by this interface work.
+
+
+The next UI request changed the default to a black theme. A separate dark palette now covers navigation, cards, controls, severity states, history, audit tables, and evidence dialogs, with dark blue Silk Waves. Open Sans, the local asset setup, animation resource limits, and model behavior remain the same. HTML symbol placeholders damaged by a Windows text-encoding conversion were replaced with portable character entities. The DOM tests and live asset/report checks pass after the change.

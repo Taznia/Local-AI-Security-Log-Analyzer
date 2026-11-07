@@ -97,7 +97,7 @@ Evidence gates require at least three independent login failures for a brute-for
 
 ## Interface and offline assets
 
-The interface uses locally bundled **Open Sans**, a white and pale-gray canvas, engineering-blue actions, and a restrained **Silk Waves** background from [Beautiful Backgrounds](https://github.com/Niekes/beautiful-backgrounds). The selected source is pinned and vendored; full font/background/dependency notices are in `THIRD_PARTY_NOTICES.md`.
+The interface uses locally bundled **Open Sans**, a black and charcoal canvas, engineering-blue actions, and a restrained **Silk Waves** background from [Beautiful Backgrounds](https://github.com/Niekes/beautiful-backgrounds). The selected source is pinned and vendored; full font/background/dependency notices are in `THIRD_PARTY_NOTICES.md`.
 
 The background uses 2D canvas, is capped at 12 FPS and 1,280 backing-canvas pixels in width, and pauses when offscreen, when the tab is hidden, or during active analysis. The system reduced-motion preference shows a static wave rendering. Fonts and scripts are served from this app; no CDN is contacted at runtime.
 

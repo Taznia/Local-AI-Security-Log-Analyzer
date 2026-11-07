@@ -16,6 +16,11 @@ async function api(path, options) {
   return response.json();
 }
 function alertMessage(message) { $('alert').textContent = message; $('alert').classList.toggle('hidden', !message); }
+function rememberJob() {
+  localStorage.setItem('tracewatch-job', job.id);
+  const url = new URL(window.location.href); url.searchParams.set('analysis', job.id);
+  window.history.replaceState(null, '', url);
+}
 
 async function refreshHealth() {
   try {
@@ -47,7 +52,7 @@ async function chooseFile(file) {
   try {
     const form = new FormData(); form.append('file', file);
     job = await api('/api/jobs', {method:'POST', body:form});
-    localStorage.setItem('tracewatch-job', job.id); filter = 'all'; search = ''; $('search').value = '';
+    rememberJob(); filter = 'all'; search = ''; $('search').value = '';
     renderJob(); await refreshHistory();
   } catch (error) { alertMessage(error.message); }
   finally { uploading = false; updateStart(); $('fileInput').value = ''; }
@@ -116,7 +121,7 @@ function renderFindings() {
   if (!job?.report) { $('findingsList').innerHTML = emptyFindingsHTML; return; }
   const findings = job.report.findings.filter(f => (filter === 'all' || filter === 'linked' && f.cross_chunk || filter === 'High' && ['High','Critical'].includes(f.severity)) && `${f.entity} ${f.attack_type} ${f.account} ${f.reason}`.toLowerCase().includes(search.toLowerCase()));
   if (!findings.length) { $('findingsList').innerHTML = `<div class="empty-state"><div class="empty-illustration"><span>✓</span></div><h3>${job.report.findings.length ? 'No findings match this view.' : 'No supported security findings.'}</h3><p>${job.report.findings.length ? 'Try another filter or search term.' : 'The model did not identify an evidence-backed attack.<br>This does not guarantee the file is free from attacks.'}</p></div>`; return; }
-  $('findingsList').innerHTML = findings.map((f, i) => `<article class="finding"><div class="finding-header"><div class="finding-title"><span class="finding-number">${String(i+1).padStart(2,'0')}</span><div><h3>${escapeHTML(f.attack_type)}</h3><div class="finding-identifiers"><code>${escapeHTML(f.entity)}</code>${f.account ? `<span>Account: ${escapeHTML(f.account)}</span>` : ''}<span>${escapeHTML(f.scope === '*' ? 'Across applications' : f.scope)}</span></div></div></div><span class="severity ${escapeHTML(f.severity)}">${escapeHTML(f.severity.toUpperCase())}</span></div><p class="finding-reason">${escapeHTML(f.reason)}</p><div class="finding-action"><strong>Suggested action</strong> &nbsp; ${escapeHTML(f.suggested_action)}</div><div class="finding-bottom"><button class="evidence-button" data-evidence="${escapeHTML(f.id)}">↗ View evidence · ${f.all_evidence_lines.length} lines</button>${f.cross_chunk ? `<span class="link-badge">⌁ Linked across ${f.chunks.length} chunks</span>` : ''}<span class="event-note">${f.unique_events} unique events${f.duplicate_lines.length ? ` · ${f.duplicate_lines.length} duplicate ignored` : ''} · ${escapeHTML(f.status)}</span></div></article>`).join('');
+  $('findingsList').innerHTML = findings.map((f, i) => `<article class="finding"><div class="finding-header"><div class="finding-title"><span class="finding-number">${String(i+1).padStart(2,'0')}</span><div><h3>${escapeHTML(f.attack_type)}</h3><div class="finding-identifiers"><code>${escapeHTML(f.entity)}</code>${f.account ? `<span>Account: ${escapeHTML(f.account)}</span>` : ''}<span>${escapeHTML(f.scope === '*' ? 'Correlated by IP' : f.scope)}</span></div></div></div><span class="severity ${escapeHTML(f.severity)}">${escapeHTML(f.severity.toUpperCase())}</span></div><p class="finding-reason">${escapeHTML(f.reason)}</p><div class="finding-action"><strong>Suggested action</strong> &nbsp; ${escapeHTML(f.suggested_action)}</div><div class="finding-bottom"><button class="evidence-button" data-evidence="${escapeHTML(f.id)}">↗ View evidence · ${f.all_evidence_lines.length} lines</button>${f.cross_chunk ? `<span class="link-badge">⌁ Linked across ${f.chunks.length} chunks</span>` : ''}<span class="event-note">${f.unique_events} unique events${f.duplicate_lines.length ? ` · ${f.duplicate_lines.length} duplicate ignored` : ''} · ${escapeHTML(f.status)}</span></div></article>`).join('');
   $('findingsList').querySelectorAll('[data-evidence]').forEach(button => button.addEventListener('click', () => showEvidence(button.dataset.evidence)));
 }
 
@@ -132,7 +137,7 @@ async function refreshHistory() {
     const jobs = await api('/api/jobs'); $('historyCount').textContent = jobs.length;
     $('historyList').innerHTML = jobs.length ? jobs.map(j=>`<div class="history-row"><div>${escapeHTML(j.filename)}<small>${new Date(j.created).toLocaleString()} · ${j.lines} lines · ${escapeHTML(j.status)}</small></div><button data-job="${j.id}">Open ↗</button></div>`).join('') : '<p class="evidence-note">Your saved analyses will appear here.</p>';
     $('historyList').querySelectorAll('[data-job]').forEach(button=>button.addEventListener('click',async()=>{
-      try { job = await api(`/api/jobs/${button.dataset.job}`); localStorage.setItem('tracewatch-job',job.id); renderJob(); $('historyPanel').classList.add('hidden'); }
+      try { job = await api(`/api/jobs/${button.dataset.job}`); rememberJob(); renderJob(); $('historyPanel').classList.add('hidden'); }
       catch(error){alertMessage(error.message);}
     }));
   } catch {}
@@ -165,8 +170,9 @@ $('auditToggle').addEventListener('click',showAudit);
 
 async function boot() {
   await refreshHealth(); await refreshHistory();
-  const saved = localStorage.getItem('tracewatch-job');
-  if (saved) { try {job=await api(`/api/jobs/${saved}`);renderJob();}catch{localStorage.removeItem('tracewatch-job');} }
+  const requested = new URLSearchParams(window.location.search).get('analysis');
+  const saved = requested && /^[a-f0-9]{32}$/.test(requested) ? requested : localStorage.getItem('tracewatch-job');
+  if (saved) { try {job=await api(`/api/jobs/${saved}`);rememberJob();renderJob();}catch{localStorage.removeItem('tracewatch-job');} }
   setInterval(async()=>{await refreshHealth();if(job && ['running','queued'].includes(job.status))await refreshJob();},2000);
 }
 boot();

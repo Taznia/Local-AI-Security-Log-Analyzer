@@ -69,6 +69,30 @@ def test_exhausted_retries_keep_existing_chunk(workspace, monkeypatch):
     model.close()
 
 
+def test_timeout_waits_for_idle_before_safe_retry(workspace, monkeypatch):
+    job = add_job(workspace, ['entry'])
+    model = LocalModel(); model.ready = True
+    model.template = lambda s,u: 'prompt'; model.tokens = lambda t: [1]; model.count = lambda t: 1
+    events = []
+    def transport(request):
+        if not events:
+            events.append('timeout')
+            raise httpx.ReadTimeout('simulated model timeout', request=request)
+        assert events == ['timeout','idle']
+        events.append('retry')
+        return httpx.Response(200,json={'content':'{"signals":[]}', 'tokens_predicted':5})
+    model.client.close()
+    model.client=httpx.Client(transport=httpx.MockTransport(transport),base_url='http://127.0.0.1:8091')
+    model.wait_idle=lambda:events.append('idle')
+    monkeypatch.setattr('analyzer.llm.time.sleep',lambda seconds:None)
+    result,meta=model.call(job,'map',0,'s','u',MAP_SCHEMA,384,lambda v:None)
+    assert events == ['timeout','idle','retry'] and meta['attempts']==2
+    assert result == {'signals':[]}
+    with db.connect() as c:
+        assert [r[0] for r in c.execute('SELECT status FROM calls WHERE job_id=? ORDER BY id',(job,))] == ['failed','ok']
+    model.close()
+
+
 class CheckpointModel(BudgetModel):
     ready = True
     error = None

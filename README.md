@@ -80,7 +80,7 @@ Evidence gates require at least three independent login failures for a brute-for
 - Three bounded attempts per failed call; each attempt is audited. After a timeout, wait for the model slot to become idle before retrying. Completed chunks and reviews remain saved on disk.
 - Restart marks unfinished jobs interrupted. **Resume from checkpoint** skips saved completed chunk calls and case reviews. A partially generated chunk plan is discarded and rebuilt safely.
 - The final report may be partial while correlation is running or after a later failure; the UI labels it. Raw per-call progress and evidence remain available even before a report exists.
-- Same-origin mutation checks, trusted loopback hosts, restrictive content security policy and no external assets. Do not expose either local port to untrusted networks.
+- Same-origin mutation checks, trusted loopback hosts, restrictive content security policy and no external assets. The owned model server uses an automatically generated, in-memory API key and a restricted CORS origin. No external API key is needed. Do not expose either local port to untrusted networks.
 
 ## API
 

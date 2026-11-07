@@ -1,6 +1,7 @@
 import json
 import hashlib
 import os
+import secrets
 import subprocess
 import threading
 import time
@@ -39,7 +40,9 @@ class LocalModel:
         parsed = urlparse(MODEL_URL)
         if parsed.scheme != "http" or parsed.hostname not in ("127.0.0.1", "localhost", "::1") or parsed.username or parsed.password:
             raise ValueError("Only a loopback HTTP model endpoint is allowed")
-        self.client = httpx.Client(base_url=MODEL_URL, timeout=httpx.Timeout(180, connect=3), trust_env=False)
+        self.api_key = secrets.token_urlsafe(32)
+        self.client = httpx.Client(base_url=MODEL_URL, timeout=httpx.Timeout(180, connect=3), trust_env=False,
+                                  headers={"Authorization": f"Bearer {self.api_key}"})
         self.process = None
         self.log = None
         self.lock = threading.Lock()
@@ -67,12 +70,15 @@ class LocalModel:
         self.log = (DATA / "model-server.log").open("ab")
         args = [str(binaries[0]), "-m", str(MODEL), "--host", "127.0.0.1", "--port", str(urlparse(MODEL_URL).port or 8091),
                 "-c", str(CONTEXT), "-np", "1", "-t", "2", "-tb", "2", "-ngl", "0", "-b", "128", "-ub", "64",
-                "--jinja", "--reasoning-budget", "0", "--no-context-shift", "--no-webui", "--slots"]
+                "--jinja", "--reasoning-budget", "0", "--no-context-shift", "--no-webui", "--slots", "--cors-origins", "http://127.0.0.1:8000"]
         flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-        self.process = subprocess.Popen(args, stdout=self.log, stderr=subprocess.STDOUT, creationflags=flags, cwd=str(ROOT))
+        model_env = {**os.environ, "LLAMA_API_KEY": self.api_key}
+        self.process = subprocess.Popen(args, stdout=self.log, stderr=subprocess.STDOUT, creationflags=flags, cwd=str(ROOT), env=model_env)
+        self.monitor = threading.Thread(target=self.sample_memory, name="memory-monitor", daemon=True)
+        self.monitor.start()
         for _ in range(120):
             if self.process.poll() is not None:
-                self.error = "Local model process exited. See runtime/model-server.log."
+                self.error = self.error or "Local model process exited. See runtime/model-server.log."
                 return
             try:
                 if self.client.get("/health").status_code == 200:
@@ -93,8 +99,6 @@ class LocalModel:
             self.fingerprint = hashlib.file_digest(source, "sha256").hexdigest()
         self.ready = True
         self.error = None
-        self.monitor = threading.Thread(target=self.sample_memory, name="memory-monitor", daemon=True)
-        self.monitor.start()
 
     def sample_memory(self):
         while not self.monitor_stop.wait(.25):

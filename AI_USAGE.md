@@ -109,3 +109,17 @@ Token IDs are obtained with `/tokenize` after `/apply-template`; those exact IDs
 - Duplicate records retain both original line numbers but count as one event. Simple backend errors, scheduled maintenance and known health checks should not become attacks merely because they contain ERROR or HTTP 5xx.
 - Findings are merged by stable case keys over the entire file; case counts come from persisted facts. Representative evidence is bounded so the final review also respects the same model context.
 - All coding-assistant output was subject to execution, tests and manual source review. Known limits are in README rather than hidden behind a fabricated “complete” claim.
+
+
+## Interface restyling follow-up
+
+The user's follow-up asked for the supplied DJI design-analysis reference, a new font, and a suitable background from Niekes/beautiful-backgrounds. The interface was restyled with Open Sans, stepped gray text, a white canvas, blue pill actions, small orange section labels, generous spacing, and a charcoal footer. No DJI images or logos were used.
+
+The selected Silk Waves source is vendored at a fixed upstream commit and bundled with Lit using esbuild. Open Sans and all runtime assets are local. The animation was adapted for the assessment's constrained environment: 12 FPS, bounded canvas width, reduced motion, viewport/tab visibility, and automatic pause during active analysis.
+
+Two concrete UI implementation mistakes were caught before handoff:
+
+- A TypeScript class imported only as a type was removed by the bundler, so the custom element was initially absent. It was changed to an explicit side-effect import. The DOM test now loads the real generated bundle and verifies that the upstream component registers and draws.
+- Windows initially served the TTF with a plain-text MIME type. A font MIME registration and live HTTP regression check now ensure `font/ttf`, including under the app's `nosniff` policy.
+
+Programmatic DOM tests also verify that model-provided strings remain escaped in findings and the evidence dialog. Native visual preview was interrupted while the user was interacting with the editor; no completed visual browser QA is claimed. Runtime local-model prompts and saved analysis results were unchanged by this interface work.

@@ -1,26 +1,99 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tracewatch — Local security intelligence</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231c514b'/%3E%3Cpath d='M11 12h18v5h-6v13h-6V17h-6' fill='%23e4edbb'/%3E%3C/svg%3E"><link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Tracewatch ? Local security intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%230070d5'/%3E%3Cpath d='M10 11h20v5H22v14h-5V16h-7z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preload" href="/static/fonts/open-sans-variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/static/theme.css?v=3">
+  <script type="module" src="/static/vendor/silk-waves.js?v=3"></script>
+  <script src="/static/app.js?v=3" defer></script>
+</head>
 <body>
-<aside class="sidebar"><a class="brand" href="/"><span class="brand-icon">T</span>tracewatch<span class="brand-dot">.</span></a><div class="workspace-label">LOCAL SECURITY INTELLIGENCE</div>
-<div class="nav-title">WORKSPACE</div><button class="nav active" id="overviewNav"><span>▦</span> Analysis overview <span class="nav-dot"></span></button><button class="nav" id="historyNav"><span>◷</span> Analysis history <span id="historyCount" class="count">0</span></button>
-<div class="side-divider"></div><div class="nav-title">YOUR ENVIRONMENT</div><div class="env-item"><span>◈</span><div>Local inference<small>No cloud connections</small></div></div><div class="env-item"><span>▤</span><div>2,048 token context<small>Counted with model tokenizer</small></div></div><div class="env-item"><span>⟳</span><div>Sequential processing<small>One call. One model. Saved progress.</small></div></div>
-<div class="side-bottom"><div class="privacy-icon">⌁</div><strong>Your logs stay here.</strong><p>Analysis runs entirely on this machine. Your data never leaves the workspace.</p><span class="offline-pill"><i></i> OFFLINE BY DESIGN</span></div><div class="sidebar-footer"><span class="avatar">TW</span><div>Tracewatch workspace<small>Local instance · v1.0</small></div></div></aside>
-<div class="main-shell"><header class="topbar"><div><span class="breadcrumb">Workspace</span><span class="slash">/</span>Analysis overview</div><div class="topbar-right"><span class="local-badge"><i></i> Local environment</span><span class="top-avatar">TW</span></div></header>
-<main><div class="page-heading"><div><div class="eyebrow">SECURITY, WITH CONTEXT</div><h1>Follow the signal.</h1><p>Turn scattered log events into a connected security story.</p></div><button class="button secondary" id="newAnalysis">＋ New analysis</button></div>
-<section class="status-strip"><span class="status-light" id="modelLight"></span><strong id="modelStatus">Connecting to local model</strong><span class="strip-separator"></span><span id="modelName">Qwen3.5 2B · Q4_K_M</span><span class="strip-end" id="ram">— MiB RAM</span><span class="cpu-chip">CPU ONLY</span></section>
-<div id="alert" class="alert hidden" role="alert"></div>
-<section id="historyPanel" class="card history hidden"><div class="card-heading"><div><h2>Analysis history</h2><p>Pick up where you left off.</p></div><button class="text-button" id="closeHistory">Close ×</button></div><div id="historyList"></div></section>
-<div class="workspace-grid"><section class="card upload-card"><div class="card-heading"><div><span class="step-label">01 / INGEST</span><h2>Bring your logs.</h2><p>One file. A clearer view of what happened.</p></div><span class="corner-icon">↗</span></div>
-<label id="dropzone" class="dropzone" for="fileInput" tabindex="0"><span class="upload-icon"><svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m-4 4 4-4 4 4M4 15v5h16v-5"/></svg></span><strong id="dropTitle">Drop a log file here</strong><span id="dropSubtitle">or <u>browse your files</u></span><span class="file-types">.LOG OR .TXT <span>·</span> UTF-8 <span>·</span> UP TO 8 MiB</span></label><input id="fileInput" type="file" accept=".log,.txt" hidden>
-<div class="upload-meta"><span><i class="tiny-dot"></i> Exact line numbers preserved</span><span>⌁ Private by default</span></div><button id="startButton" class="button primary" disabled><span>Start analysis</span><span>↗</span></button><div class="microcopy">The model reads every chunk. Related events are linked across the file.</div></section>
-<section class="card pipeline-card"><div class="card-heading"><div><span class="step-label">02 / INVESTIGATE</span><h2>A connected investigation.</h2><p id="pipelineSubtitle">Evidence first. Conclusions second.</p></div><span id="jobBadge" class="badge neutral">READY WHEN YOU ARE</span></div>
-<div class="pipeline"><div class="pipeline-step" data-phase="splitting"><div class="step-node">1</div><div><strong>Split with precision</strong><p>Model-tokenized chunks within the 2,048-token limit.</p></div><span class="step-state">—</span></div><div class="pipeline-step" data-phase="analyzing"><div class="step-node">2</div><div><strong>Analyze &amp; remember</strong><p>Local AI reviews each part. Facts survive every call.</p></div><span class="step-state">—</span></div><div class="pipeline-step" data-phase="correlating"><div class="step-node">3</div><div><strong>Connect the evidence</strong><p>Merge repeated signals and follow activity across chunks.</p></div><span class="step-state">—</span></div></div>
-<div class="progress-header"><span id="progressLabel">Waiting for a log file</span><strong id="progressPercent">0%</strong></div><div class="progress-track"><div id="progressBar"></div></div><div class="progress-footer"><span id="chunkCount">0 chunks processed</span><span id="elapsed">— elapsed</span></div><div id="chunkGrid" class="chunk-grid"></div><div id="resumeArea" class="hidden"><button id="resumeButton" class="button secondary">Resume from checkpoint ↗</button></div></section></div>
-<section class="metrics"><div class="metric"><span class="metric-label">SECURITY FINDINGS <span>↗</span></span><div><strong id="metricFindings">—</strong><span class="metric-note">evidence-backed signals</span></div><div class="metric-line coral"></div></div><div class="metric"><span class="metric-label">HIGH PRIORITY <span>!</span></span><div><strong id="metricHigh">—</strong><span class="metric-note">need a closer look</span></div><div class="metric-line amber"></div></div><div class="metric"><span class="metric-label">CROSS-CHUNK LINKS <span>⌁</span></span><div><strong id="metricLinks">—</strong><span class="metric-note">the bigger picture</span></div><div class="metric-line green"></div></div><div class="metric"><span class="metric-label">LINES ANALYZED <span>▤</span></span><div><strong id="metricLines">—</strong><span class="metric-note" id="uniqueNote">original evidence retained</span></div><div class="metric-line gray"></div></div></section>
-<section class="card findings-card"><div class="card-heading"><div><span class="step-label">03 / UNDERSTAND</span><h2>The investigation report<span class="heading-count" id="findingCount">0</span></h2><p id="reportSubtitle">One report, built from the whole file.</p></div><a id="exportButton" class="button secondary disabled" href="#" aria-disabled="true">↓ Export JSON</a></div><div class="report-toolbar"><div class="tabs" role="tablist"><button class="tab active" data-filter="all">All findings</button><button class="tab" data-filter="High">High priority</button><button class="tab" data-filter="linked">Cross-chunk</button></div><label class="search"><span>⌕</span><input id="search" placeholder="Search IP, type or account" aria-label="Search findings"></label></div>
-<div id="findingsList"><div class="empty-state"><div class="empty-illustration"><div class="empty-line"></div><span>⌕</span><div class="empty-line short"></div></div><h3>The story starts with your logs.</h3><p>Upload a file to uncover suspicious activity, connect related<br>events, and see the evidence behind every finding.</p><span class="empty-label">LOCAL MODEL. REAL EVIDENCE. FULL CONTEXT.</span></div></div><div id="reportCaveat" class="report-caveat hidden">ⓘ Findings indicate possible attacks and require human review. A blocked request is not proof of a successful attack.</div></section>
-<section id="auditSection" class="card audit-card hidden"><button class="audit-toggle" id="auditToggle"><span>Token budget &amp; call audit</span><span>Every call accounted for ＋</span></button><div id="auditBody" class="hidden"></div></section>
-<footer><span><span class="footer-logo">T</span> tracewatch <span class="footer-dot">/</span> Make the connections.</span><span>Built for constrained hardware. Designed for careful conclusions.</span></footer></main></div>
-<dialog id="evidenceDialog"><div class="dialog-heading"><div><span class="step-label">ORIGINAL SOURCE</span><h2>Evidence explorer</h2></div><button id="closeDialog" class="icon-button" aria-label="Close evidence">×</button></div><div id="evidenceContent"></div></dialog>
-</body></html>
+  <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <symbol id="i-brand" viewBox="0 0 34 34"><path fill="currentColor" d="M3 5h28v5H20v19h-6V10H3z"/><path fill="currentColor" opacity=".35" d="M24 15h7v5h-7zM3 15h7v5H3z"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+      <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-4 4 4-4 4 4M4 15v6h16v-6"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path d="m9 15 6-6m-5-3 2-2a5 5 0 0 1 7 7l-2 2M7 11l-2 2a5 5 0 0 0 7 7l2-2"/></symbol>
+      <symbol id="i-lines" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M3 6h.1M3 12h.1M3 18h.1"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+      <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4c5-4 9 4 14 0v11c-5 4-9-4-14 0"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 8v5m0 4v.1M10.3 3.5 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.5a2 2 0 0 0-3.4 0Z"/></symbol>
+      <symbol id="i-cross" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="announcement"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg> Private by design. Your logs stay on your device.<span>Local AI. No cloud inference.</span></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Tracewatch home"><svg class="brand-mark" aria-hidden="true"><use href="#i-brand"/></svg><span class="brand-word">tracewatch</span></a>
+    <nav class="nav-links" aria-label="Workspace navigation">
+      <button class="nav active" id="overviewNav">Overview</button>
+      <button class="nav" id="historyNav" aria-expanded="false" aria-controls="historyPanel">History <span id="historyCount" class="count">0</span></button>
+    </nav>
+    <div class="topbar-right"><span class="local-badge"><i></i> Local workspace</span><button class="button primary nav-cta" id="newAnalysis">New analysis <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+  </header>
+
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-background" aria-hidden="true"><bb-silk-waves silk-color="#afc6de" swell="0.28" sheen="0.85" reach="0.9" speed="0.35" bg-colors="#f5f8fc, #e4edf7" bg-angle="60"></bb-silk-waves></div>
+    <div class="hero-content">
+      <div class="eyebrow">LOCAL SECURITY INTELLIGENCE</div>
+      <h1 id="heroTitle">See the whole story.</h1>
+      <p>Connect the events. Understand the evidence.<br>One clear investigation, powered by local AI.</p>
+      <div class="hero-actions"><a class="button primary" href="#workspace">Analyze a log <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a><a class="text-link" href="#report">Explore the report <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg></a></div>
+    </div>
+    <span class="hero-corner"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg> SMALL DETAILS. CONNECTED THINKING.</span><span class="hero-edition">TRACEWATCH / LOCAL EDITION</span>
+  </section>
+
+  <main id="workspace">
+    <section class="status-strip" aria-label="Local model status"><span class="status-light" id="modelLight"></span><strong id="modelStatus">Connecting to local model</strong><span class="strip-separator"></span><span id="modelName">Qwen3.5 2B ? Q4_K_M</span><span class="strip-end" id="ram">? MiB RAM</span><span class="cpu-chip">CPU ONLY</span></section>
+    <div id="alert" class="alert hidden" role="alert"></div>
+    <section id="historyPanel" class="card history hidden"><div class="card-heading"><div><span class="step-label">Saved investigations</span><h2>Pick up where you left off.</h2><p>Previous reports and saved checkpoints, all on this device.</p></div><button class="text-button" id="closeHistory">Close ?</button></div><div id="historyList"></div></section>
+    <div class="workspace-heading"><h2>Your investigation starts here.</h2><p>Private analysis. A clearer perspective.</p></div>
+    <div class="workspace-grid">
+      <section class="card upload-card" aria-labelledby="uploadTitle">
+        <div class="card-heading"><div><span class="step-label">01 / Upload</span><h2 id="uploadTitle">Bring your logs.</h2><p>A single file. A complete view of the activity.</p></div><span class="corner-icon" aria-hidden="true"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span></div>
+        <label id="dropzone" class="dropzone" for="fileInput" tabindex="0"><span class="upload-icon"><svg class="icon" aria-hidden="true"><use href="#i-upload"/></svg></span><strong id="dropTitle">Drop a log file here</strong><span id="dropSubtitle">or <u>browse your files</u></span><span class="file-types">.LOG OR .TXT <span>?</span> UTF-8 <span>?</span> UP TO 8 MiB</span></label>
+        <input id="fileInput" type="file" accept=".log,.txt" hidden>
+        <div class="upload-meta"><span><svg class="icon" aria-hidden="true"><use href="#i-lines"/></svg>Original line numbers preserved</span><span><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Only on your device</span></div>
+        <button id="startButton" class="button primary" disabled><span>Start analysis</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <div class="microcopy">Every part is reviewed. Related events are connected across the file.</div>
+      </section>
+      <section class="card pipeline-card" aria-labelledby="pipelineTitle">
+        <div class="card-heading"><div><span class="step-label">02 / Investigate</span><h2 id="pipelineTitle">Make the connections.</h2><p id="pipelineSubtitle">From individual events to the bigger picture.</p></div><span id="jobBadge" class="badge neutral">READY WHEN YOU ARE</span></div>
+        <div class="pipeline">
+          <div class="pipeline-step" data-phase="splitting"><div class="step-node">1</div><div><strong>Split with precision</strong><p>Log entries fit within the model?s context, line numbers intact.</p></div><span class="step-state">?</span></div>
+          <div class="pipeline-step" data-phase="analyzing"><div class="step-node">2</div><div><strong>Analyze &amp; remember</strong><p>Local AI reviews each part. Useful facts carry forward.</p></div><span class="step-state">?</span></div>
+          <div class="pipeline-step" data-phase="correlating"><div class="step-node">3</div><div><strong>Connect the evidence</strong><p>Repeated signals become one coherent investigation.</p></div><span class="step-state">?</span></div>
+        </div>
+        <div class="progress-header"><span id="progressLabel">Waiting for a log file</span><strong id="progressPercent">0%</strong></div><div class="progress-track"><div id="progressBar"></div></div><div class="progress-footer"><span id="chunkCount">0 chunks processed</span><span id="elapsed">? elapsed</span></div><div id="chunkGrid" class="chunk-grid"></div>
+        <div id="resumeArea" class="hidden"><button id="resumeButton" class="button secondary">Resume from checkpoint <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
+      </section>
+    </div>
+
+    <section class="metrics" aria-label="Investigation summary">
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-flag"/></svg> SECURITY FINDINGS</span><div><strong id="metricFindings">?</strong><span class="metric-note">evidence-backed signals</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg> HIGH PRIORITY</span><div><strong id="metricHigh">?</strong><span class="metric-note">need a closer look</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-link"/></svg> CONNECTED SIGNALS</span><div><strong id="metricLinks">?</strong><span class="metric-note">linked across chunks</span></div></div>
+      <div class="metric"><span class="metric-label"><svg class="icon" aria-hidden="true"><use href="#i-lines"/></svg> LINES ANALYZED</span><div><strong id="metricLines">?</strong><span class="metric-note" id="uniqueNote">original evidence retained</span></div></div>
+    </section>
+
+    <section id="report" class="card findings-card" aria-labelledby="reportTitle">
+      <div class="card-heading"><div><span class="step-label">03 / Understand</span><h2 id="reportTitle">The investigation report<span class="heading-count" id="findingCount">0</span></h2><p id="reportSubtitle">One report, built from the whole file.</p></div><a id="exportButton" class="button secondary disabled" href="#" aria-disabled="true"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Export JSON</a></div>
+      <div class="report-toolbar"><div class="tabs" role="tablist" aria-label="Filter findings"><button class="tab active" data-filter="all" role="tab" aria-selected="true">All findings</button><button class="tab" data-filter="High" role="tab" aria-selected="false">High priority</button><button class="tab" data-filter="linked" role="tab" aria-selected="false">Cross-chunk</button></div><label class="search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="search" placeholder="Search IP, type or account" aria-label="Search findings"></label></div>
+      <div id="findingsList"><div class="empty-state"><div class="empty-illustration"><div class="empty-line"></div><span>?</span><div class="empty-line short"></div></div><h3>The story starts with your logs.</h3><p>Upload a file to uncover suspicious activity, connect related<br>events, and see the evidence behind every finding.</p><span class="empty-label">LOCAL MODEL. REAL EVIDENCE. FULL CONTEXT.</span></div></div>
+      <div id="reportCaveat" class="report-caveat hidden">? Findings indicate possible attacks and require human review. A blocked request is not proof of a successful attack.</div>
+    </section>
+    <section id="auditSection" class="card audit-card hidden"><button class="audit-toggle" id="auditToggle"><span>Token budget &amp; call audit</span><span>A closer look at the process ?</span></button><div id="auditBody" class="hidden"></div></section>
+  </main>
+
+  <footer class="footer"><div class="footer-top"><a class="brand" href="/" aria-label="Tracewatch home"><svg class="brand-mark" aria-hidden="true"><use href="#i-brand"/></svg><span class="brand-word">tracewatch</span></a><div class="footer-message"><strong>Clarity without compromise.</strong>Local inference. Connected evidence. Careful conclusions.</div></div><div class="footer-bottom"><span>Tracewatch ? Local security intelligence</span><span class="offline-pill"><i></i> OFFLINE BY DESIGN</span></div></footer>
+  <dialog id="evidenceDialog" aria-labelledby="evidenceTitle"><div class="dialog-heading"><div><span class="step-label">Original source</span><h2 id="evidenceTitle">Evidence explorer</h2></div><button id="closeDialog" class="icon-button" aria-label="Close evidence">?</button></div><div id="evidenceContent"></div></dialog>
+</body>
+</html>

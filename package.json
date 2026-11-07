@@ -1,0 +1,15 @@
+{
+  "name": "tracewatch-interface-assets",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Optional development tooling. The Python app serves the committed offline assets directly.",
+  "scripts": {
+    "build:background": "node scripts/build-background.mjs",
+    "test:ui": "node --test tests/ui.test.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "jsdom": "26.1.0",
+    "lit": "3.3.3"
+  }
+}

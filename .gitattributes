@@ -1,2 +1,4 @@
 * text=auto eol=lf
 *.log -text
+# Lit's generated template literals contain significant trailing whitespace.
+web/vendor/silk-waves.js -whitespace linguist-generated=true

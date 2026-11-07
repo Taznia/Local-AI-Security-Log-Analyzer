@@ -1,0 +1,14 @@
+{
+  "upstream": "https://github.com/Niekes/beautiful-backgrounds",
+  "commit": "a44535748fac1be7a29a714f38eca8faea880327",
+  "component": "BbSilkWaves",
+  "lit": "3.3.3",
+  "esbuild": "0.25.12",
+  "modifications": [
+    "12 FPS limit",
+    "1280px canvas-width cap",
+    "reduced-motion support",
+    "offscreen pause",
+    "analysis pause"
+  ]
+}

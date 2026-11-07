@@ -12,3 +12,4 @@ artifacts/frames/
 private-notes/
 *.log
 artifacts/*.json
+node_modules/

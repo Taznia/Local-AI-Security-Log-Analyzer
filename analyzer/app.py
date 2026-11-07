@@ -1,5 +1,6 @@
 import asyncio
 import json
+import mimetypes
 import queue
 import threading
 import uuid
@@ -15,6 +16,10 @@ from .config import DATA, ROOT, MAX_UPLOAD
 from .ingest import ingest
 from .llm import LocalModel
 from .pipeline import Engine
+
+# Windows MIME registrations are inconsistent for local font files. Use the
+# explicit web font type so preload + nosniff work in Chromium and Firefox.
+mimetypes.add_type("font/ttf", ".ttf")
 
 model = LocalModel()
 engine = None

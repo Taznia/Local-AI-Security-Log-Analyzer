@@ -21,6 +21,12 @@ function rememberJob() {
   const url = new URL(window.location.href); url.searchParams.set('analysis', job.id);
   window.history.replaceState(null, '', url);
 }
+function setHistoryOpen(open) {
+  $('historyPanel').classList.toggle('hidden', !open);
+  $('historyNav').classList.toggle('active', open);
+  $('overviewNav').classList.toggle('active', !open);
+  $('historyNav').setAttribute('aria-expanded', String(open));
+}
 
 async function refreshHealth() {
   try {
@@ -75,6 +81,9 @@ async function refreshJob() {
 
 function renderJob() {
   if (!job) return;
+  const running = ['queued', 'running'].includes(job.status);
+  document.documentElement.dataset.analysisActive = String(running);
+  window.dispatchEvent(new CustomEvent('tracewatch:analysis-state', {detail: {running}}));
   $('dropTitle').textContent = job.filename;
   $('dropSubtitle').textContent = `${fmt(job.lines)} lines · ${(job.bytes/1024).toFixed(1)} KiB · click to replace`;
   const labels = {uploaded:'FILE VALIDATED',queued:'QUEUED',running:'ANALYZING',completed:'COMPLETE',failed:'SAVED · RETRY AVAILABLE',interrupted:'CHECKPOINT SAVED'};
@@ -106,7 +115,7 @@ function renderJob() {
   $('metricHigh').textContent = summary ? fmt((summary.severity_counts.High || 0) + (summary.severity_counts.Critical || 0)) : '—';
   $('metricLinks').textContent = summary ? fmt(summary.cross_chunk_findings) : '—';
   $('metricLines').textContent = completed ? fmt(job.lines) : job.completed && job.chunks ? fmt(Math.max(...job.chunks.filter(c=>c.status==='done').flatMap(c=>c.lines), 0)) : '—';
-  $('uniqueNote').textContent = summary ? `${fmt(summary.unique_events)} unique · ${summary.duplicate_lines} duplicates` : 'original evidence retained';
+  $('uniqueNote').textContent = summary ? `${fmt(summary.unique_events)} unique · ${summary.duplicate_lines} duplicate${summary.duplicate_lines === 1 ? '' : 's'}` : 'original evidence retained';
   $('findingCount').textContent = summary ? summary.findings : 0;
   $('exportButton').classList.toggle('disabled', !job.report); $('exportButton').setAttribute('aria-disabled', String(!job.report));
   $('exportButton').href = job.report ? `/api/jobs/${job.id}/report` : '#';
@@ -117,7 +126,10 @@ function renderJob() {
 }
 
 function renderFindings() {
-  document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.filter === filter));
+  document.querySelectorAll('.tab').forEach(el => {
+    const active = el.dataset.filter === filter;
+    el.classList.toggle('active', active); el.setAttribute('aria-selected', String(active));
+  });
   if (!job?.report) { $('findingsList').innerHTML = emptyFindingsHTML; return; }
   const findings = job.report.findings.filter(f => (filter === 'all' || filter === 'linked' && f.cross_chunk || filter === 'High' && ['High','Critical'].includes(f.severity)) && `${f.entity} ${f.attack_type} ${f.account} ${f.reason}`.toLowerCase().includes(search.toLowerCase()));
   if (!findings.length) { $('findingsList').innerHTML = `<div class="empty-state"><div class="empty-illustration"><span>✓</span></div><h3>${job.report.findings.length ? 'No findings match this view.' : 'No supported security findings.'}</h3><p>${job.report.findings.length ? 'Try another filter or search term.' : 'The model did not identify an evidence-backed attack.<br>This does not guarantee the file is free from attacks.'}</p></div>`; return; }
@@ -137,7 +149,7 @@ async function refreshHistory() {
     const jobs = await api('/api/jobs'); $('historyCount').textContent = jobs.length;
     $('historyList').innerHTML = jobs.length ? jobs.map(j=>`<div class="history-row"><div>${escapeHTML(j.filename)}<small>${new Date(j.created).toLocaleString()} · ${j.lines} lines · ${escapeHTML(j.status)}</small></div><button data-job="${j.id}">Open ↗</button></div>`).join('') : '<p class="evidence-note">Your saved analyses will appear here.</p>';
     $('historyList').querySelectorAll('[data-job]').forEach(button=>button.addEventListener('click',async()=>{
-      try { job = await api(`/api/jobs/${button.dataset.job}`); rememberJob(); renderJob(); $('historyPanel').classList.add('hidden'); }
+      try { job = await api(`/api/jobs/${button.dataset.job}`); rememberJob(); renderJob(); setHistoryOpen(false); }
       catch(error){alertMessage(error.message);}
     }));
   } catch {}
@@ -158,10 +170,13 @@ $('fileInput').addEventListener('change',e=>chooseFile(e.target.files[0]));
 ['dragleave','drop'].forEach(event=>$('dropzone').addEventListener(event,e=>{e.preventDefault();$('dropzone').classList.remove('drag');if(event==='drop')chooseFile(e.dataTransfer.files[0]);}));
 $('dropzone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileInput').click();}});
 $('startButton').addEventListener('click',startJob); $('resumeButton').addEventListener('click',startJob);
-$('newAnalysis').addEventListener('click',()=>$('fileInput').click());
-$('historyNav').addEventListener('click',()=>{$('historyPanel').classList.toggle('hidden');refreshHistory();});
-$('closeHistory').addEventListener('click',()=>$('historyPanel').classList.add('hidden'));
-$('overviewNav').addEventListener('click',()=>{$('historyPanel').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'});});
+$('newAnalysis').addEventListener('click',()=>{
+  $('workspace').scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  $('fileInput').click();
+});
+$('historyNav').addEventListener('click',()=>{setHistoryOpen($('historyPanel').classList.contains('hidden'));refreshHistory();});
+$('closeHistory').addEventListener('click',()=>setHistoryOpen(false));
+$('overviewNav').addEventListener('click',()=>{setHistoryOpen(false);window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});});
 $('closeDialog').addEventListener('click',()=>$('evidenceDialog').close());
 $('evidenceDialog').addEventListener('click',e=>{if(e.target===$('evidenceDialog'))$('evidenceDialog').close();});
 document.querySelectorAll('.tab').forEach(button=>button.addEventListener('click',()=>{filter=button.dataset.filter;renderFindings();}));

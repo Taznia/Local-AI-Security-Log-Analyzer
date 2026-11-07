@@ -95,6 +95,22 @@ Evidence gates require at least three independent login failures for a brute-for
 | `GET /api/jobs/{id}/audit` | Every model attempt, budget, timing and error |
 | `GET /api/jobs/{id}/report` | Download merged JSON report |
 
+## Interface and offline assets
+
+The interface uses locally bundled **Open Sans**, a white and pale-gray canvas, engineering-blue actions, and a restrained **Silk Waves** background from [Beautiful Backgrounds](https://github.com/Niekes/beautiful-backgrounds). The selected source is pinned and vendored; full font/background/dependency notices are in `THIRD_PARTY_NOTICES.md`.
+
+The background uses 2D canvas, is capped at 12 FPS and 1,280 backing-canvas pixels in width, and pauses when offscreen, when the tab is hidden, or during active analysis. The system reduced-motion preference shows a static wave rendering. Fonts and scripts are served from this app; no CDN is contacted at runtime.
+
+The generated background bundle is committed. **Node is not required to run Tracewatch.** For optional interface development and DOM checks:
+
+```text
+npm ci
+npm run build:background
+npm run test:ui
+```
+
+The DOM tests check report filtering, search, safely escaped evidence, dialogs, history, actual background registration, the frame cap, reduced motion, and pause/resume behavior. They do not replace a visual browser test.
+
 ## Optional CLI client
 
 With the app running, the same API can be exercised without a browser:

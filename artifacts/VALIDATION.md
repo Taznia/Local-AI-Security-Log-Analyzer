@@ -4,10 +4,10 @@ Date: 7 November 2026. Tested on Windows 11 with Python 3.13.4.
 
 ## Automated checks
 
-- **29 tests passed** (`python -m pytest -q`).
+- **30 backend/safety tests passed** (`python -m pytest -q`).
 - One deprecation warning comes from Starlette TestClient using an AnyIO alias; it did not fail a check.
 - Python modules compile and frontend JavaScript passes `node --check`.
-- HTML/JavaScript identifier checks found 44 unique DOM IDs and no missing referenced IDs.
+- HTML/JavaScript identifier checks found 64 unique DOM IDs and no missing referenced IDs.
 - The live HTML, CSS and JavaScript endpoints return HTTP 200 with restrictive content-security headers.
 - Tests include broken JSON, failed calls, timeout/idle-wait/retry ordering, checkpoint reuse, identity/scope isolation, false model labels on supplier errors, and rejection of an isolated 429 as a rate attack.
 
@@ -50,3 +50,13 @@ Observed network connections for the backend and model were loopback-only. The o
 Native-browser visual QA was stopped by a computer-use URL safety check. The frontend has source/identifier/syntax checks and live HTTP verification, but a visual browser check is not claimed. The measured process footprint is backend plus its model, not the entire Windows desktop. A separate hard-limited 4 GB Linux VM/container run has not been performed.
 
 The small model occasionally emits wrong map labels and broadly worded recommendations, including calling an IP an account. Source-corroboration gates prevent unsupported map labels from becoming final cases, but human review of reasons/actions is still needed. AI_USAGE.md documents observed mistakes and prompt changes. Models are not claimed to be perfectly accurate.
+
+
+## Interface restyling verification
+
+- Two additional DOM integration tests pass (`npm run test:ui`). These exercise report filters/search, escaped evidence, dialog controls, export/history, and active-analysis notifications.
+- The actual generated Silk Waves bundle is loaded by the DOM tests: component registration, drawing, 12 FPS frame skipping, 1,280px canvas cap, analysis pause, reduced motion, static redraw on resize, viewport pause, and disconnect cleanup all pass.
+- The live Open Sans font is served as `font/ttf`; the stylesheet and bundled scripts return the appropriate CSS/JavaScript types under the existing content-security policy.
+- CSS syntax/primary font and color checks supplement the DOM tests; these are not visual browser tests.
+- The six-finding report remains complete after restarting the application to apply the Windows font MIME registration.
+- Fonts, animation code, and dependency licenses are bundled locally. No log files, raw report JSON, private recording notes, or node_modules are included in the repository.

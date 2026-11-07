@@ -52,3 +52,13 @@ def test_unknown_job_and_invalid_evidence_range(client):
     assert client.get('/api/jobs/missing').status_code == 404
     j=client.post('/api/jobs',files={'file':('a.log',b'hello')}).json()
     assert client.get('/api/jobs/'+j['id']+'/evidence?limit=10000').status_code == 400
+
+
+def test_offline_interface_assets_have_browser_compatible_types(client):
+    page=client.get('/')
+    assert page.status_code==200 and 'See the whole story.' in page.text
+    for path,kinds in [('/static/fonts/open-sans-variable.ttf',{'font/ttf'}),('/static/theme.css',{'text/css'}),('/static/vendor/silk-waves.js',{'text/javascript','application/javascript'})]:
+        result=client.get(path)
+        assert result.status_code==200
+        assert result.headers['content-type'].split(';')[0] in kinds
+        assert len(result.content)>1000
